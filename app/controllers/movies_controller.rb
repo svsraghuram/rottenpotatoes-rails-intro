@@ -7,19 +7,31 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.order(params[:sort])
-    @sort_title = params[:sort]
+    if !params[:submit_clicked] and !params[:sort] and !params[:ratings] and request.env['PATH_INFO'] == '/'
+      session.clear
+    end
 
-    submit_clicked = params[:submit_clicked]
+    @sort_with = params[:sort]
     @all_ratings = Movie.select(:rating).map(&:rating).uniq
-    generatedRatings = {}
-    @all_ratings.each{ |rating| generatedRatings[rating] = 1 }
+    selectedRatings = {}
+    @all_ratings.each{ |r| selectedRatings[r] = 1 }
     
     ratings = {}
     
-    if(submit_clicked)
+    if(params[:sort])
+      session[:sort_with] = params[:sort]
+      @movies = Movie.order(params[:sort])
+    elsif(session[:sort_with])
+      @movies = Movie.order(session[:sort_with])
+      @sort_with = session[:sort_with]
+    else
+      @movies = Movie.all
+      session[:sort_with] = nil
+    end
+
+    if(params[:submit_clicked])
       if(!params[:ratings])
-        ratings = generatedRatings
+        ratings = selectedRatings
         session[:ratings] = nil
       else
         ratings = params[:ratings]
@@ -31,11 +43,11 @@ class MoviesController < ApplicationController
     elsif(session[:ratings])
       ratings = session[:ratings]
     else
-      ratings = generatedRatings
+      ratings = selectedRatings
       session[:ratings] = nil
     end
 
-    @ratings_to_show = ratings == generatedRatings ? generatedRatings.keys : ratings.keys
+    @ratings_to_show = ratings == selectedRatings ? selectedRatings.keys : ratings.keys
     @movies = @movies.with_ratings(ratings.keys)
   end
 

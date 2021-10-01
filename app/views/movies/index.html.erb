@@ -20,9 +20,9 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th class="<%= @sort_title=="title" ? 'hilite bg-warning' : 'hilite bg-transparent' %>"><%= link_to "Movie Title", :sort => "title"%> </th>
-      <th class="<%= @sort_title=="rating" ? 'hilite bg-warning' : 'hilite bg-transparent' %>"><%= link_to "Rating", :sort => "rating"%> </th>
-      <th class="<%= @sort_title=="release_date" ? 'hilite bg-warning' : 'hilite bg-transparent' %>"><%= link_to "Release Date", :sort => "release_date"%> </th>
+      <th class="<%= @sort_with=="title" ? 'hilite bg-warning' : 'hilite bg-transparent' %>"><%= link_to "Movie Title", :sort => "title"%> </th>
+      <th class="<%= @sort_with=="rating" ? 'hilite bg-warning' : 'hilite bg-transparent' %>"><%= link_to "Rating", :sort => "rating"%> </th>
+      <th class="<%= @sort_with=="release_date" ? 'hilite bg-warning' : 'hilite bg-transparent' %>"><%= link_to "Release Date", :sort => "release_date"%> </th>
       <th>More Info</th>
     </tr>
   </thead>
