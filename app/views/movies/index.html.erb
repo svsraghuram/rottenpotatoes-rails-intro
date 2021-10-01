@@ -1,14 +1,28 @@
 <!--  This file is app/views/movies/index.html.erb -->
 <h2>All Movies</h2>
+<%#  Part 2: Start here... %>
+<%= form_tag movies_path, method: :get, id: 'ratings_form', autocomplete: 'off' do %>
+  Filters:
+  <% @all_ratings.each do |rating| %>
+    <div class="form-check  form-check-inline">
+      <%= label_tag "ratings[#{rating}]", rating, class: 'form-check-label' %>
+      <pre> </pre>
+      <%= check_box_tag "ratings[#{rating}]", "1",  @ratings_to_show.include?(rating), class: 'form-check-input', id: "ratings_#{rating}" %>
+    </div>
+  <% end %>
+  <%= hidden_field_tag :submit_clicked, true %>
+  <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
+<% end %>
 
+</br>
 <%#  Part 1: Start here... %>
 
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th>Movie Title</th>
-      <th>Rating</th>
-      <th>Release Date</th>
+      <th class="<%= @sort_title=="title" ? 'hilite bg-warning' : 'hilite bg-transparent' %>"><%= link_to "Movie Title", :sort => "title"%> </th>
+      <th class="<%= @sort_title=="rating" ? 'hilite bg-warning' : 'hilite bg-transparent' %>"><%= link_to "Rating", :sort => "rating"%> </th>
+      <th class="<%= @sort_title=="release_date" ? 'hilite bg-warning' : 'hilite bg-transparent' %>"><%= link_to "Release Date", :sort => "release_date"%> </th>
       <th>More Info</th>
     </tr>
   </thead>
